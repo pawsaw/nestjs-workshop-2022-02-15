@@ -1,35 +1,18 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { Book, ISBN } from './book';
-import { books } from './books';
 import { CreateBookDto } from './create-book.dto';
-import { getBooksAsync } from './getBooksAsync';
 
 @Injectable()
 export class BooksService {
   findAll(): Promise<Book[]> {
-    return getBooksAsync();
+    throw 'Not implemented yet.';
   }
 
   async findOne(isbn: ISBN): Promise<Book> {
-    const allBooks = await getBooksAsync();
-    const book = allBooks.find((book) => book.isbn === isbn);
-    if (!book) {
-      throw new NotFoundException('Book with requested isbn not found');
-    }
-
-    return book;
+    throw 'Not implemented yet.';
   }
 
   async createBook(createBookDto: CreateBookDto): Promise<Book> {
-    const newBook: Book = {
-      ...createBookDto,
-      publisher: {
-        ...createBookDto.publisher,
-      },
-    };
-
-    books.push(newBook);
-
-    return newBook;
+    throw 'Not implemented yet.';
   }
 }
