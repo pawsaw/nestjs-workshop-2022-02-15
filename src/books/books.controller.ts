@@ -1,6 +1,11 @@
-import { Controller, Get, HttpCode, HttpStatus, Param } from '@nestjs/common';
-import { Book } from './book';
-import { books } from './books';
+import {
+  Controller,
+  Get,
+  HttpStatus,
+  NotFoundException,
+  Param,
+} from '@nestjs/common';
+import { Book, ISBN } from './book';
 import { ApiTags, ApiResponse } from '@nestjs/swagger';
 import { getBooksAsync } from './getBooksAsync';
 
@@ -45,5 +50,33 @@ export class BooksController {
     //       (a: Book, b: Book) => a.title.length - b.title.length,
     //     );
     //   });
+  }
+
+  @ApiResponse({
+    description: 'Returns a book with the requested isbn',
+    status: HttpStatus.OK,
+    type: Book,
+  })
+  @ApiResponse({
+    description: 'The book with the requested isbn does not exist',
+    status: HttpStatus.NOT_FOUND,
+  })
+  @Get(':isbn')
+  async findOne(
+    @Param('isbn') isbn: ISBN,
+    // @Res() response: Response,
+  ): Promise<Book> {
+    const allBooks = await getBooksAsync();
+    const book = allBooks.find((book) => book.isbn === isbn);
+    if (!book) {
+      throw new NotFoundException('Book with requested isbn not found');
+      //   response
+      //     .status(HttpStatus.NOT_FOUND)
+      //     .send('Book with requested isbn not found');
+    }
+
+    // response.status(HttpStatus.OK).json(book);
+
+    return book;
   }
 }

@@ -1,5 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 
+export type ISBN = string;
+
 export class Publisher {
   @ApiProperty()
   name: string;
@@ -15,7 +17,7 @@ export class Book {
   subtitle: string;
 
   @ApiProperty()
-  isbn: string;
+  isbn: ISBN;
 
   @ApiProperty()
   abstract: string;
