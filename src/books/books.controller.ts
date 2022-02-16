@@ -1,13 +1,17 @@
 import {
+  Body,
   Controller,
   Get,
   HttpStatus,
   NotFoundException,
   Param,
+  Post,
 } from '@nestjs/common';
 import { Book, ISBN } from './book';
 import { ApiTags, ApiResponse } from '@nestjs/swagger';
 import { getBooksAsync } from './getBooksAsync';
+import { CreateBookDto } from './create-book.dto';
+import { books } from './books';
 
 @Controller('books')
 @ApiTags('books')
@@ -78,5 +82,19 @@ export class BooksController {
     // response.status(HttpStatus.OK).json(book);
 
     return book;
+  }
+
+  @Post()
+  async createBook(@Body() createBookDto: CreateBookDto): Promise<Book> {
+    const newBook: Book = {
+      ...createBookDto,
+      publisher: {
+        ...createBookDto.publisher,
+      },
+    };
+
+    books.push(newBook);
+
+    return newBook;
   }
 }
