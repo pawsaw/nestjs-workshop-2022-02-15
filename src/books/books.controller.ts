@@ -3,6 +3,7 @@ import { Book, ISBN } from './book';
 import { ApiTags, ApiResponse } from '@nestjs/swagger';
 import { CreateBookDto } from './create-book.dto';
 import { BooksService } from './books.service';
+import { Observable } from 'rxjs';
 
 @Controller('books')
 @ApiTags('books')
@@ -15,7 +16,7 @@ export class BooksController {
     type: [Book],
   })
   @Get()
-  findAll(): Promise<Book[]> {
+  findAll(): Observable<Book[]> {
     return this.booksService.findAll();
   }
 
@@ -29,15 +30,15 @@ export class BooksController {
     status: HttpStatus.NOT_FOUND,
   })
   @Get(':isbn')
-  async findOne(
+  findOne(
     @Param('isbn') isbn: ISBN,
     // @Res() response: Response,
-  ): Promise<Book> {
+  ): Observable<Book> {
     return this.booksService.findOne(isbn);
   }
 
   @Post()
-  async createBook(@Body() createBookDto: CreateBookDto): Promise<Book> {
+  createBook(@Body() createBookDto: CreateBookDto): Observable<Book> {
     return this.booksService.createBook(createBookDto);
   }
 }

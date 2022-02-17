@@ -2,14 +2,10 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export type ISBN = string;
 
-export class Publisher {
-  @ApiProperty()
-  name: string;
-  @ApiProperty()
-  url: string;
-}
-
 export class Book {
+  @ApiProperty()
+  id: ISBN;
+
   @ApiProperty()
   title: string;
 
@@ -23,13 +19,20 @@ export class Book {
   abstract: string;
 
   @ApiProperty()
+  author: string;
+
+  @ApiProperty()
+  publisher: string;
+
+  @ApiProperty()
+  price: string;
+
+  @ApiProperty()
   numPages: number;
 
   @ApiProperty()
-  author: string;
+  cover: string;
 
-  @ApiProperty({
-    description: 'The publisher of the book',
-  })
-  publisher: Publisher;
+  @ApiProperty()
+  userId: number;
 }

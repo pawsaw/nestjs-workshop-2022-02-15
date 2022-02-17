@@ -23,9 +23,6 @@ export class MockBooksService {
   async createBook(createBookDto: CreateBookDto): Promise<Book> {
     const newBook: Book = {
       ...createBookDto,
-      publisher: {
-        ...createBookDto.publisher,
-      },
     };
 
     books.push(newBook);

@@ -1,16 +1,24 @@
 import { Book } from './book';
-import { CreatePublisherDto } from './create-publisher.dto';
-import {
-  IsString,
-  IsNotEmpty,
-  ValidateNested,
-  IsInt,
-  IsPositive,
-  Min,
-} from 'class-validator';
-import { Type } from 'class-transformer';
+import { IsString, IsNotEmpty, IsInt, IsPositive, Min } from 'class-validator';
 
-export class CreateBookDto implements Omit<Book, 'publisher'> {
+export class CreateBookDto implements Book {
+  @IsString()
+  @IsNotEmpty()
+  id: string;
+
+  @IsString()
+  @IsNotEmpty()
+  price: string;
+
+  @IsString()
+  @IsNotEmpty()
+  cover: string;
+
+  @IsInt()
+  @IsNotEmpty()
+  @IsPositive()
+  userId: number;
+
   @IsString()
   @IsNotEmpty()
   title: string;
@@ -37,7 +45,7 @@ export class CreateBookDto implements Omit<Book, 'publisher'> {
   @IsNotEmpty()
   author: string;
 
-  @ValidateNested()
-  @Type(() => CreatePublisherDto)
-  publisher: CreatePublisherDto;
+  @IsString()
+  @IsNotEmpty()
+  publisher: string;
 }
