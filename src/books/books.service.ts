@@ -1,6 +1,6 @@
 import { HttpService } from '@nestjs/axios';
-import { Injectable } from '@nestjs/common';
-import { map, Observable } from 'rxjs';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { catchError, map, Observable, of, throwError } from 'rxjs';
 import { Book, ISBN } from './book';
 import { CreateBookDto } from './create-book.dto';
 
@@ -15,9 +15,19 @@ export class BooksService {
   }
 
   findOne(isbn: ISBN): Observable<Book> {
-    return this.http
-      .get<Book>(`http://localhost:4730/books/${isbn}`)
-      .pipe(map((response) => response.data));
+    return this.http.get<Book>(`http://localhost:4730/books/${isbn}`).pipe(
+      map((response) => response.data),
+      catchError((error) => {
+        if (error?.response?.status === 404) {
+          throw new NotFoundException(
+            'The book with the given isbn has not been found',
+          );
+        } else {
+          throw error;
+        }
+        return of();
+      }),
+    );
   }
 
   createBook(createBookDto: CreateBookDto): Observable<Book> {
