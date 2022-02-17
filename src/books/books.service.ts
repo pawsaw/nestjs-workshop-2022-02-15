@@ -2,6 +2,7 @@ import { HttpService } from '@nestjs/axios';
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { catchError, map, Observable, of, throwError } from 'rxjs';
 import { Book, ISBN } from './book';
+import { BookNotFoundException } from './book-not-found.exception';
 import { CreateBookDto } from './create-book.dto';
 
 @Injectable()
@@ -19,7 +20,7 @@ export class BooksService {
       map((response) => response.data),
       catchError((error) => {
         if (error?.response?.status === 404) {
-          throw new NotFoundException(
+          throw new BookNotFoundException(
             'The book with the given isbn has not been found',
           );
         } else {
